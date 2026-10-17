@@ -2,6 +2,7 @@
 // Përdor @netlify/blobs getStore("shkurto-links")
 // Trajton: POST /api/shorten, GET /api/links, DELETE /api/links/:code, GET /api/stats
 const { getStore, connectLambda } = require('@netlify/blobs');
+const QRCode = require('qrcode');
 
 const RESERVED = ['api', 'admin', 'kodi', 'index', 'public', 'netlify'];
 const ALIAS_RE = /^[a-zA-Z0-9-_]{3,30}$/;
@@ -45,7 +46,6 @@ function baseUrl(event) {
 exports.handler = async (event) => {
   try {
     try { connectLambda(event); } catch (e) {}
-    const store = getStore('shkurto-links');
     const method = event.httpMethod;
     const path = event.path || '';
     // Pastro path: /api/shorten, /.netlify/functions/api/shorten, /api/links/CODE, etj.
@@ -53,6 +53,22 @@ exports.handler = async (event) => {
     if (!clean.startsWith('/')) clean = `/${clean}`;
     // DELETE /links/:code
     const deleteMatch = clean.match(/^\/links\/([^/]+)$/);
+
+    // GET /api/qr?text=<url> — QR PNG nga serveri (zero varësi CDN)
+    if (method === 'GET' && clean === '/qr') {
+      const text = (event.queryStringParameters && event.queryStringParameters.text) || '';
+      if (!text) return json(400, { error: 'Parametri text është i detyrueshëm.' });
+      if (text.length > 2048) return json(400, { error: 'Teksti është shumë i gjatë (max 2048 karaktere).' });
+      const validation = validateUrl(text);
+      if (!validation.ok) return json(400, { error: 'Lejohen vetëm URL me http:// ose https://' });
+      try {
+        const buf = await QRCode.toBuffer(validation.url, { width: 320, margin: 1 });
+        return { statusCode: 200, headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }, body: buf.toString('base64'), isBase64Encoded: true };
+      } catch (e) { return json(500, { error: 'QR nuk u gjenerua dot.' }); }
+    }
+
+    // Store-i krijohet pas degës QR: QR nuk varet nga Blobs
+    const store = getStore('shkurto-links');
 
     if (method === 'POST' && (clean === '/shorten' || clean === '/' || clean === '')) {
       const ip = (event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown').split(',')[0].trim();
