@@ -1,0 +1,86 @@
+<!-- Created by Erion Nezha — © 2026 All rights reserved -->
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shkurto — Shkurto linket e gjata</title>
+<meta name="description" content="Shkurto — Shkurto linket e gjata, me alias custom, QR code, skadencë dhe statistika klikimesh.">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">🔗 Shkurto</div>
+  <div class="tagline">Shkurto linket e gjata</div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>Shkurto linket e gjata</h1>
+    <p class="subtitle">Ngjit një link të gjatë, merr një link të shkurtër — me QR code, alias custom dhe statistika.</p>
+  </section>
+
+  <section class="stats" id="stats">
+    <div class="stat-card"><span class="stat-num" id="statTotalLinks">0</span><span class="stat-label">Total linke</span></div>
+    <div class="stat-card"><span class="stat-num" id="statTotalClicks">0</span><span class="stat-label">Total klikime</span></div>
+    <div class="stat-card"><span class="stat-num" id="statToday">0</span><span class="stat-label">Sot</span></div>
+    <div class="stat-card"><span class="stat-num" id="statWeek">0</span><span class="stat-label">Këtë javë</span></div>
+  </section>
+
+  <section class="card">
+    <form id="shortenForm" novalidate>
+      <label for="longUrl">Linku i gjatë</label>
+      <input type="url" id="longUrl" placeholder="https://shembull.com/nje-link-shume-i-gjate..." required>
+
+      <div class="row">
+        <div class="field">
+          <label for="customAlias">Alias custom (opsional)</label>
+          <input type="text" id="customAlias" placeholder="p.sh. oferta-ime" maxlength="30">
+        </div>
+        <div class="field">
+          <label for="expiration">Skadenca</label>
+          <select id="expiration">
+            <option value="never">Kurrë</option>
+            <option value="24h">24 orë</option>
+            <option value="7d">7 ditë</option>
+            <option value="30d">30 ditë</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" id="shortenBtn">Shkurto</button>
+      <p id="errorMsg" class="error" hidden></p>
+    </form>
+
+    <div id="result" class="result" hidden>
+      <label>Linku yt i shkurtër</label>
+      <div class="result-row">
+        <input type="text" id="shortUrl" readonly>
+        <button type="button" id="copyBtn">Kopjo</button>
+      </div>
+      <div class="qr-wrap">
+        <canvas id="qrCanvas"></canvas>
+        <p class="qr-label">QR Code — skanoje për ta hapur</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="dash-head">
+      <h2>Linket e mia</h2>
+      <button type="button" id="refreshBtn" class="btn-secondary">Rifresko</button>
+    </div>
+    <div id="linksList" class="links-list">
+      <p class="empty">Po ngarkohen linket…</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Krijuar nga Erion Nezha</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
