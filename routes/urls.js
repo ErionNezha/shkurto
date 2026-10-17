@@ -1,5 +1,6 @@
 // routes/urls.js — API: POST /shorten, GET /links, DELETE /links/:code, GET /stats
 const express = require('express');
+const QRCode = require('qrcode');
 const store = require('../store');
 
 const router = express.Router();
@@ -206,6 +207,25 @@ async function statsHandler(req, res) {
 }
 router.get('/stats', statsHandler);
 router.get('/api/stats', statsHandler);
+
+// GET /api/qr?text=<url> — QR PNG i gjeneruar në server (zero varësi CDN)
+async function qrHandler(req, res) {
+  const text = req.query && req.query.text != null ? String(req.query.text) : '';
+  if (!text) return res.status(400).json({ error: 'Parametri text është i detyrueshëm.' });
+  if (text.length > 2048) return res.status(400).json({ error: 'Teksti është shumë i gjatë (max 2048 karaktere).' });
+  const validation = validateUrl(text);
+  if (!validation.ok) return res.status(400).json({ error: 'Lejohen vetëm URL me http:// ose https://' });
+  try {
+    const buf = await QRCode.toBuffer(validation.url, { width: 320, margin: 1 });
+    res.set('Content-Type', 'image/png');
+    res.set('Cache-Control', 'public, max-age=86400');
+    return res.send(buf);
+  } catch (e) {
+    return res.status(500).json({ error: 'QR nuk u gjenerua dot.' });
+  }
+}
+router.get('/qr', qrHandler);
+router.get('/api/qr', qrHandler);
 
 router.shortenHandler = shortenHandler;
 router.validateUrl = validateUrl;
