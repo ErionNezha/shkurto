@@ -6,8 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shkurto — Shkurto linket e gjata</title>
 <meta name="description" content="Shkurto — Shkurto linket e gjata, me alias custom, QR code, skadencë dhe statistika klikimesh.">
+<meta name="theme-color" content="#0b0f1a">
+<meta property="og:title" content="Shkurto — Shkurto linket e gjata">
+<meta property="og:description" content="Ngjit një link të gjatë, merr një link të shkurtër — me QR code, alias custom dhe statistika klikimesh.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
 <header class="topbar">
@@ -31,12 +35,12 @@
   <section class="card">
     <form id="shortenForm" novalidate>
       <label for="longUrl">Linku i gjatë</label>
-      <input type="url" id="longUrl" placeholder="https://shembull.com/nje-link-shume-i-gjate..." required>
+      <input type="url" id="longUrl" placeholder="https://shembull.com/nje-link-shume-i-gjate..." required inputmode="url" autocomplete="off" spellcheck="false">
 
       <div class="row">
         <div class="field">
           <label for="customAlias">Alias custom (opsional)</label>
-          <input type="text" id="customAlias" placeholder="p.sh. oferta-ime" maxlength="30">
+          <input type="text" id="customAlias" placeholder="p.sh. oferta-ime" maxlength="30" autocomplete="off" spellcheck="false">
         </div>
         <div class="field">
           <label for="expiration">Skadenca</label>
@@ -60,8 +64,9 @@
         <button type="button" id="copyBtn">Kopjo</button>
       </div>
       <div class="qr-wrap">
-        <canvas id="qrCanvas"></canvas>
+        <a id="qrLink" href="#" target="_blank" rel="noopener"><img id="qrImg" alt="QR code i linkut të shkurtër" width="180" height="180"></a>
         <p class="qr-label">QR Code — skanoje për ta hapur</p>
+        <a id="qrDownload" class="btn-secondary qr-download" href="#" download="qr-shkurto.png">Shkarko QR</a>
       </div>
     </div>
   </section>
@@ -78,7 +83,7 @@
 </main>
 
 <footer>
-  <p>Krijuar nga Erion Nezha</p>
+  <p>Krijuar nga Erion Nezha · <a href="https://github.com/ErionNezha/shkurto" target="_blank" rel="noopener">&lt;/&gt; Kodi burim</a></p>
 </footer>
 
 <script src="script.js"></script>
