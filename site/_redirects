@@ -1,0 +1,2 @@
+/api/*  /.netlify/functions/api  200
+/:code  /.netlify/functions/redirect?code=:code  200
