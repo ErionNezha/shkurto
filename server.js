@@ -24,7 +24,7 @@ app.get('/:code', async (req, res) => {
   try {
     const { code } = req.params;
     // Mos kapi file / rrugë të njohura
-    if (['favicon.ico', 'robots.txt', 'style.css', 'script.js', 'index.html'].includes(code)) {
+    if (['favicon.ico', 'favicon.svg', 'robots.txt', 'style.css', 'script.js', 'index.html'].includes(code)) {
       return res.status(404).send('Nuk u gjet.');
     }
     const link = await store.getLinkByCode(code);
