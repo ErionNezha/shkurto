@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       const last = parts[parts.length - 1];
       if (last && last !== 'redirect') code = last;
     }
-    code = decodeURIComponent(String(code).trim());
+    try { code = decodeURIComponent(String(code).trim()); } catch (e) { code = String(code).trim(); }
     if (!code) return htmlPage(404, '404', '404 — Linku nuk u gjet', 'Ky link i shkurtër nuk ekziston.');
 
     const store = getStore('shkurto-links');
