@@ -69,7 +69,7 @@ function buildLinkItem(link) {
   item.innerHTML = `
     <div class="short">${escapeHtml(shortUrl)}</div>
     <div class="orig">${escapeHtml(link.originalUrl)}</div>
-    <div class="meta"><span>Klikime: <strong>${link.clickCount || 0}</strong></span><span>Krijuar: ${formatDate(link.createdAt)}</span><span>${escapeHtml(expiresText)}</span><span>Kodi: ${escapeHtml(link.shortCode)}</span></div>
+    <div class="meta"><span>Klikime: <strong>${Number(link.clickCount) || 0}</strong></span><span>Krijuar: ${formatDate(link.createdAt)}</span><span>${escapeHtml(expiresText)}</span><span>Kodi: ${escapeHtml(link.shortCode)}</span></div>
     <div class="link-actions">
       <button type="button" class="btn-copy">Kopjo</button>
       <button type="button" class="btn-qr" aria-expanded="false">QR</button>
@@ -94,14 +94,24 @@ function buildLinkItem(link) {
       if (dl && !dl.getAttribute('href')) dl.href = src;
     }
   });
-  item.querySelector('.btn-delete').addEventListener('click', async (e) => {
+  const delBtn = item.querySelector('.btn-delete');
+  // Gjendja "e armatosur" ruhet globale (armedDelete) që ri-renderimi i listës
+  // (ri-sinkronizimi automatik) të mos e humbasë konfirmimin në mes të klikimeve.
+  if (armedDelete.code === link.shortCode && Date.now() - armedDelete.at < 3000) {
+    delBtn.dataset.armed = '1';
+    delBtn.textContent = 'Konfirmo fshirjen?';
+    setTimeout(() => { if (armedDelete.code === link.shortCode) { armedDelete = { code: null, at: 0 }; delBtn.dataset.armed = ''; delBtn.textContent = 'Fshi'; } }, 3000 - (Date.now() - armedDelete.at));
+  }
+  delBtn.addEventListener('click', async (e) => {
     const btn = e.currentTarget;
     if (!btn.dataset.armed) {
+      armedDelete = { code: link.shortCode, at: Date.now() };
       btn.dataset.armed = '1';
       btn.textContent = 'Konfirmo fshirjen?';
-      setTimeout(() => { btn.dataset.armed = ''; btn.textContent = 'Fshi'; }, 3000);
+      setTimeout(() => { if (armedDelete.code === link.shortCode) armedDelete = { code: null, at: 0 }; btn.dataset.armed = ''; btn.textContent = 'Fshi'; }, 3000);
       return;
     }
+    armedDelete = { code: null, at: 0 };
     btn.disabled = true;
     const del = await fetch(`/api/links/${encodeURIComponent(link.shortCode)}`, { method: 'DELETE' });
     if (del.ok) { freshLinks.delete(link.shortCode); loadLinks(); loadStats(); } else { btn.disabled = false; btn.dataset.armed = ''; btn.textContent = 'Fshi'; showError('Fshirja dështoi. Provo përsëri.'); }
@@ -112,9 +122,16 @@ function buildLinkItem(link) {
 // Linket e sapokrijuara: serveri (Blobs) mund të vonojë disa sekonda t'i
 // tregojë te lista — këto mbahen lokalisht që karta të mos zhduket te ri-ngarkimi.
 const freshLinks = new Map();
+// Karta me buton fshirjeje "të armatosur" (pret konfirmimin) — mbijeton ri-renderimet.
+let armedDelete = { code: null, at: 0 };
+
+function renderSkeletons() {
+  linksList.innerHTML = '<div class="skeleton-card" aria-hidden="true"><div class="skeleton-line w45"></div><div class="skeleton-line w90"></div><div class="skeleton-line w70"></div></div>'
+    + '<div class="skeleton-card" aria-hidden="true"><div class="skeleton-line w45"></div><div class="skeleton-line w90"></div><div class="skeleton-line w70"></div></div>';
+}
 
 async function loadLinks() {
-  linksList.innerHTML = '<p class="empty">Po ngarkohen linket…</p>';
+  renderSkeletons();
   try {
     const res = await fetch('/api/links');
     if (!res.ok) throw new Error('API error');
