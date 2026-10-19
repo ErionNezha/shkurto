@@ -3,90 +3,144 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Shkurto — Shkurto linket e gjata</title>
 <meta name="description" content="Shkurto — Shkurto linket e gjata, me alias custom, QR code, skadencë dhe statistika klikimesh.">
-<meta name="theme-color" content="#0b0f1a">
+<meta name="theme-color" content="#0a1a15">
 <meta property="og:title" content="Shkurto — Shkurto linket e gjata">
 <meta property="og:description" content="Ngjit një link të gjatë, merr një link të shkurtër — me QR code, alias custom dhe statistika klikimesh.">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jbmono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v1M14 20h1M17 17h4v4h-4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
+  <symbol id="i-paste" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></symbol>
+</svg>
+
 <header class="topbar">
-  <div class="brand"><span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Shkurto</div>
-  <div class="tagline">Shkurto linket e gjata</div>
+  <a class="brand" href="/" aria-label="Shkurto, faqja kryesore">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <rect x="1" y="1" width="38" height="38" rx="11" class="bm-bg"/>
+      <rect x="7" y="15" width="15" height="10" rx="5" class="bm-link"/>
+      <rect x="18" y="15" width="15" height="10" rx="5" class="bm-link bm-cut"/>
+      <path d="M24 8 16 32" class="bm-blade"/>
+    </svg>
+    <span>Shkurto</span>
+  </a>
+  <a class="source-link" href="https://github.com/ErionNezha/shkurto" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg>Kodi burim</a>
 </header>
 
 <main class="container">
   <section class="hero">
-    <h1>Shkurto linket e gjata</h1>
-    <p class="subtitle">Ngjit një link të gjatë, merr një link të shkurtër — me QR code, alias custom dhe statistika.</p>
+    <h1 class="headline">Shkurto linket<br>e gjata.</h1>
+    <p class="subtitle">Ngjit një link të gjatë dhe merr një të shkurtër, me QR code, alias tëndin, skadencë dhe numërim klikimesh.</p>
   </section>
 
-  <section class="stats" id="stats">
-    <div class="stat-card"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span><span class="stat-num" id="statTotalLinks">0</span><span class="stat-label">Total linke</span></div>
-    <div class="stat-card"><span class="stat-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><span class="stat-num" id="statTotalClicks">0</span><span class="stat-label">Total klikime</span></div>
-    <div class="stat-card"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></span><span class="stat-num" id="statToday">0</span><span class="stat-label">Sot</span></div>
-    <div class="stat-card"><span class="stat-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><span class="stat-num" id="statWeek">0</span><span class="stat-label">Këtë javë</span></div>
-  </section>
+  <section class="mat" aria-label="Shkurto një link">
+    <div class="band" id="band" aria-hidden="true">
+      <div class="band-scroll" id="bandScroll">
+        <div class="ruler" id="ruler"></div>
+        <div class="strip" id="strip"></div>
+        <div class="blade" id="blade"></div>
+      </div>
+      <div class="band-foot">
+        <span id="bandCount">0 karaktere</span>
+        <span id="bandDelta" class="band-delta"></span>
+      </div>
+    </div>
 
-  <section class="card">
-    <form id="shortenForm" novalidate>
-      <label for="longUrl">Linku i gjatë</label>
-      <input type="url" id="longUrl" placeholder="https://shembull.com/nje-link-shume-i-gjate..." required inputmode="url" autocomplete="off" spellcheck="false">
-
-      <div class="row">
-        <div class="field">
-          <label for="customAlias">Alias custom (opsional)</label>
-          <input type="text" id="customAlias" placeholder="p.sh. oferta-ime" maxlength="30" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="field">
-          <label for="expiration">Skadenca</label>
-          <select id="expiration">
-            <option value="never">Kurrë</option>
-            <option value="24h">24 orë</option>
-            <option value="7d">7 ditë</option>
-            <option value="30d">30 ditë</option>
-          </select>
-        </div>
+    <form id="shortenForm" class="form" novalidate>
+      <label for="longUrl" class="sr-only">Linku i gjatë</label>
+      <div class="url-field">
+        <input type="url" id="longUrl" placeholder="Ngjit linkun e gjatë këtu" required inputmode="url" autocomplete="off" spellcheck="false">
+        <button type="button" id="pasteBtn" class="btn-ghost paste-btn" hidden><svg class="ic" aria-hidden="true"><use href="#i-paste"/></svg><span>Ngjit</span></button>
+        <button type="submit" id="shortenBtn" class="btn-primary">Shkurto</button>
       </div>
 
-      <button type="submit" id="shortenBtn">Shkurto</button>
-      <p id="errorMsg" class="error" hidden></p>
+      <div class="options">
+        <div class="opt alias-opt">
+          <label for="customAlias">Alias (opsional)</label>
+          <div class="alias-field">
+            <span class="alias-prefix" id="aliasPrefix">shkurto.netlify.app/</span>
+            <input type="text" id="customAlias" placeholder="oferta-ime" maxlength="30" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <fieldset class="opt">
+          <legend>Skadenca</legend>
+          <div class="segmented" id="expiration">
+            <label><input type="radio" name="expiration" value="never" checked><span>Kurrë</span></label>
+            <label><input type="radio" name="expiration" value="24h"><span>24 orë</span></label>
+            <label><input type="radio" name="expiration" value="7d"><span>7 ditë</span></label>
+            <label><input type="radio" name="expiration" value="30d"><span>30 ditë</span></label>
+          </div>
+        </fieldset>
+      </div>
+      <p id="errorMsg" class="error" role="alert" hidden></p>
     </form>
 
     <div id="result" class="result" hidden>
-      <label for="shortUrl">Linku yt i shkurtër</label>
-      <div class="result-row">
-        <input type="text" id="shortUrl" readonly>
-        <button type="button" id="copyBtn">Kopjo</button>
+      <div class="result-main">
+        <p class="result-label">Linku yt i shkurtër</p>
+        <a id="shortUrlLink" class="short-big" href="#" target="_blank" rel="noopener"></a>
+        <input type="hidden" id="shortUrl">
+        <p class="result-orig" id="resultOrig"></p>
+        <div class="result-actions">
+          <button type="button" id="copyBtn" class="btn-primary"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span>Kopjo linkun</span></button>
+          <a id="openBtn" class="btn-ghost" href="#" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-open"/></svg><span>Hape</span></a>
+          <button type="button" id="shareBtn" class="btn-ghost" hidden><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg><span>Ndaje</span></button>
+        </div>
       </div>
-      <div class="qr-wrap">
-        <a id="qrLink" href="#" target="_blank" rel="noopener"><img id="qrImg" alt="QR code i linkut të shkurtër" width="180" height="180"></a>
-        <p class="qr-label">QR Code — skanoje për ta hapur</p>
-        <a id="qrDownload" class="btn-secondary qr-download" href="#" download="qr-shkurto.png">Shkarko QR</a>
-      </div>
+      <figure class="qr-card">
+        <a id="qrLink" href="#" target="_blank" rel="noopener"><img id="qrImg" alt="QR code i linkut të shkurtër" width="168" height="168"></a>
+        <figcaption>Skanoje me kamerë për ta hapur</figcaption>
+        <a id="qrDownload" class="btn-ghost btn-sm" href="#" download="qr-shkurto.png"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Shkarko QR</a>
+      </figure>
     </div>
   </section>
 
-  <section class="card">
-    <div class="dash-head">
-      <h2>Linket e mia</h2>
-      <button type="button" id="refreshBtn" class="btn-secondary">Rifresko</button>
+  <section class="readings" id="stats" aria-label="Statistikat">
+    <div class="reading"><span class="reading-num" id="statTotalLinks">0</span><span class="reading-label">linke të krijuara</span></div>
+    <div class="reading"><span class="reading-num" id="statTotalClicks">0</span><span class="reading-label">klikime gjithsej</span></div>
+    <div class="reading"><span class="reading-num" id="statToday">0</span><span class="reading-label">klikime sot</span></div>
+    <div class="reading"><span class="reading-num" id="statWeek">0</span><span class="reading-label">klikime këtë javë</span></div>
+  </section>
+
+  <section class="links" aria-labelledby="linksTitle">
+    <div class="links-head">
+      <h2 id="linksTitle">Linket e mia <span class="links-count" id="linksCount"></span></h2>
+      <div class="links-tools">
+        <label class="search">
+          <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+          <span class="sr-only">Kërko te linket</span>
+          <input type="search" id="searchInput" placeholder="Kërko kodin ose adresën" autocomplete="off">
+        </label>
+        <button type="button" id="refreshBtn" class="btn-ghost icon-btn" aria-label="Rifresko listën" title="Rifresko"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></button>
+      </div>
     </div>
-    <div id="linksList" class="links-list" aria-live="polite">
-      <div class="skeleton-card" aria-hidden="true"><div class="skeleton-line w45"></div><div class="skeleton-line w90"></div><div class="skeleton-line w70"></div></div>
-      <div class="skeleton-card" aria-hidden="true"><div class="skeleton-line w45"></div><div class="skeleton-line w90"></div><div class="skeleton-line w70"></div></div>
-    </div>
+    <div id="linksList" class="links-list" aria-live="polite"></div>
   </section>
 </main>
 
-<footer>
-  <p>Krijuar nga Erion Nezha · <a href="https://github.com/ErionNezha/shkurto" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Kodi burim</a></p>
+<footer class="footer">
+  <p>Krijuar nga Erion Nezha</p>
+  <a href="https://github.com/ErionNezha/shkurto" target="_blank" rel="noopener">Kodi burim në GitHub</a>
 </footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="script.js"></script>
 </body>
