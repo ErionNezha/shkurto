@@ -1,0 +1,8 @@
+# Konfigurimi i deploy-it në Netlify
+[build]
+  publish = "site"
+  functions = "netlify/functions-src"
+  command = "npm install --prefix netlify/functions-src/api && npm install --prefix netlify/functions-src/redirect"
+
+[functions]
+  node_bundler = "zisi"
